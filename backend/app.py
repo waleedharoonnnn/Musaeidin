@@ -37,5 +37,13 @@ def chat():
     except Exception as e:
         return jsonify({'response': f'Error: {str(e)}'}), 500
 
+@app.route('/feedback', methods=['POST'])
+def feedback():
+    data = request.get_json()
+    feedback_text = data.get('feedback', '')
+    # For now, just print the feedback. You can store it in a file or database if needed.
+    print(f"Received feedback: {feedback_text}")
+    return jsonify({'message': 'Feedback received!'}), 200
+
 if __name__ == '__main__':
     app.run(debug=True) 

@@ -1,54 +1,111 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import "./App.css";
 
-const featureCards = [
-  {
-    title: "Dua to make",
-    desc: "Dua for Protection from Evil",
-    icon: (
-      <svg width="32" height="32" fill="none" viewBox="0 0 24 24">
-        <path
-          fill="#fff"
-          d="M12 2a1 1 0 0 1 1 1v2.07A7.002 7.002 0 0 1 19.93 11H22a1 1 0 1 1 0 2h-2.07A7.002 7.002 0 0 1 13 19.93V22a1 1 0 1 1-2 0v-2.07A7.002 7.002 0 0 1 4.07 13H2a1 1 0 1 1 0-2h2.07A7.002 7.002 0 0 1 11 4.07V2a1 1 0 0 1 1-1Zm0 4a5 5 0 1 0 0 10A5 5 0 0 0 12 6Z"
+function Navbar({ onNavigate }) {
+  return (
+    <nav className="navbar">
+      <div className="navbar-left" onClick={() => onNavigate("home")}>
+        <img src="/logo.png" alt="Musaeidin Logo" className="navbar-logo" />
+        <span className="navbar-title">Musaeidin</span>
+      </div>
+      <div className="navbar-right">
+        <button className="nav-link" onClick={() => onNavigate("about")}>
+          About Us
+        </button>
+        <button className="nav-link" onClick={() => onNavigate("feedback")}>
+          Feedback
+        </button>
+      </div>
+    </nav>
+  );
+}
+
+function AboutUs() {
+  return (
+    <div className="section-card">
+      <h2>About Us</h2>
+      <p>
+        Musaeidin is an AI-powered assistant designed to provide spiritual
+        guidance, answer questions, and support your journey. Our mission is to
+        make knowledge and support accessible to everyone, anytime.
+      </p>
+    </div>
+  );
+}
+
+function Feedback() {
+  const [feedback, setFeedback] = useState("");
+  const [status, setStatus] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus("");
+    try {
+      const res = await fetch("http://localhost:5000/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ feedback }),
+      });
+      if (res.ok) {
+        setStatus("Thank you for your feedback!");
+        setFeedback("");
+      } else {
+        setStatus("Error submitting feedback.");
+      }
+    } catch {
+      setStatus("Error submitting feedback.");
+    }
+  };
+
+  return (
+    <div className="section-card">
+      <h2>Feedback</h2>
+      <form onSubmit={handleSubmit} className="feedback-form">
+        <textarea
+          value={feedback}
+          onChange={(e) => setFeedback(e.target.value)}
+          placeholder="Your feedback..."
+          required
         />
-      </svg>
-    ),
-  },
-  {
-    title: "Islamic perspectives",
-    desc: "On Trust in Allah",
-    icon: (
-      <svg width="32" height="32" fill="none" viewBox="0 0 24 24">
-        <path
-          fill="#fff"
-          d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20Zm0 2a8 8 0 1 0 0 16A8 8 0 0 0 12 4Zm0 3a1 1 0 0 1 1 1v3h3a1 1 0 1 1 0 2h-4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1Z"
+        <button type="submit">Submit</button>
+      </form>
+      {status && <div className="feedback-status">{status}</div>}
+    </div>
+  );
+}
+
+function Home({ input, setInput, loading, sendMessage }) {
+  return (
+    <>
+      <img src="/logo.png" alt="Musaeidin Logo" className="main-logo" />
+      <h1 className="main-title main-title-black">Musaeidin</h1>
+      <form className="chat-input-bar" onSubmit={sendMessage}>
+        <input
+          type="text"
+          placeholder="Salam, Message Musaeidin..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          disabled={loading}
         />
-      </svg>
-    ),
-  },
-  {
-    title: "Spiritual remedies",
-    desc: "For Maximizing Ramadan Worship",
-    icon: (
-      <svg width="32" height="32" fill="none" viewBox="0 0 24 24">
-        <path
-          fill="#fff"
-          d="M12 2a1 1 0 0 1 1 1v2.07A7.002 7.002 0 0 1 19.93 11H22a1 1 0 1 1 0 2h-2.07A7.002 7.002 0 0 1 13 19.93V22a1 1 0 1 1-2 0v-2.07A7.002 7.002 0 0 1 4.07 13H2a1 1 0 1 1 0-2h2.07A7.002 7.002 0 0 1 11 4.07V2a1 1 0 0 1 1-1Zm0 4a5 5 0 1 0 0 10A5 5 0 0 0 12 6Z"
-        />
-      </svg>
-    ),
-  },
-];
+        <button
+          type="submit"
+          disabled={loading || !input.trim()}
+          className="send-btn"
+        >
+          <svg width="28" height="28" fill="none" viewBox="0 0 24 24">
+            <path fill="#fff" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+          </svg>
+        </button>
+      </form>
+    </>
+  );
+}
 
 function App() {
-  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const chatEndRef = useRef(null);
-
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, loading]);
+  const [page, setPage] = useState("home");
+  const [messages, setMessages] = useState([]);
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -76,38 +133,18 @@ function App() {
 
   return (
     <div className="pattern-bg">
+      <Navbar onNavigate={setPage} />
       <div className="center-content">
-        <img src="/logo.png" alt="Musaeidin Logo" className="main-logo" />
-        <h1 className="main-title">Musaeidin</h1>
-        <div className="feature-cards">
-          {featureCards.map((card, idx) => (
-            <div className="feature-card" key={idx}>
-              <div className="feature-icon">{card.icon}</div>
-              <div>
-                <div className="feature-title">{card.title}</div>
-                <div className="feature-desc">{card.desc}</div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <form className="chat-input-bar" onSubmit={sendMessage}>
-          <input
-            type="text"
-            placeholder="Salam, Message Musaeidin..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            disabled={loading}
+        {page === "home" && (
+          <Home
+            input={input}
+            setInput={setInput}
+            loading={loading}
+            sendMessage={sendMessage}
           />
-          <button
-            type="submit"
-            disabled={loading || !input.trim()}
-            className="send-btn"
-          >
-            <svg width="28" height="28" fill="none" viewBox="0 0 24 24">
-              <path fill="#fff" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-            </svg>
-          </button>
-        </form>
+        )}
+        {page === "about" && <AboutUs />}
+        {page === "feedback" && <Feedback />}
       </div>
     </div>
   );
