@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./App.css";
 
 function Navbar({ onNavigate }) {
@@ -150,11 +150,29 @@ function Feedback() {
   );
 }
 
-function Home({ input, setInput, loading, sendMessage }) {
+function Home({ input, setInput, loading, sendMessage, messages, chatEndRef }) {
   return (
     <>
       <img src="/logo.png" alt="Musaeidin Logo" className="main-logo" />
       <h1 className="main-title main-title-black">Musaeidin</h1>
+      <div className="chat-area">
+        {messages.map((msg, idx) => (
+          <div
+            key={idx}
+            className={`chat-bubble ${
+              msg.sender === "user" ? "user-bubble" : "ai-bubble"
+            }`}
+          >
+            <span>{msg.text}</span>
+          </div>
+        ))}
+        {loading && (
+          <div className="chat-bubble ai-bubble">
+            <i>Musaeidin is typing...</i>
+          </div>
+        )}
+        <div ref={chatEndRef} />
+      </div>
       <form className="chat-input-bar" onSubmit={sendMessage}>
         <input
           type="text"
@@ -182,6 +200,11 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState("home");
   const [messages, setMessages] = useState([]);
+  const chatEndRef = useRef(null);
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, loading]);
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -217,6 +240,8 @@ function App() {
             setInput={setInput}
             loading={loading}
             sendMessage={sendMessage}
+            messages={messages}
+            chatEndRef={chatEndRef}
           />
         )}
         {page === "about" && <AboutUs />}

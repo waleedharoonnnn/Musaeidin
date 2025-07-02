@@ -12,6 +12,19 @@ CORS(app)
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent'
 
+islamic_prompt = """
+You are an Islamic chatbot named Musaeidin. You are trained to answer questions only based on the Quran, Sahih Hadiths (e.g., Bukhari, Muslim), and respected Islamic scholars (e.g., Ibn Taymiyyah, Imam Nawawi). 
+
+If a question is outside your scope or not found in Islamic teachings, kindly say:
+"I am designed to answer only based on authentic Islamic sources. Please consult a trusted scholar for this matter."
+
+Guidelines:
+- Include Surah and Ayah number when quoting Quran.
+- Mention the book and number when citing Hadith.
+- Be gentle, empathetic, and helpful to users who are struggling with mental health (e.g., anxiety, sadness, stress).
+- Never speculate. Never guess. Only speak from trusted Islamic knowledge.
+"""
+
 @app.route('/chat', methods=['POST'])
 def chat():
     data = request.get_json()
@@ -24,7 +37,12 @@ def chat():
     }
     payload = {
         "contents": [
-            {"parts": [{"text": user_message}]}
+            {
+                "parts": [
+                    {"text": islamic_prompt},
+                    {"text": user_message}
+                ]
+            }
         ]
     }
     try:
