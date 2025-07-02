@@ -23,11 +23,51 @@ function Navbar({ onNavigate }) {
 function AboutUs() {
   return (
     <div className="section-card">
-      <h2>About Us</h2>
-      <p>
-        Musaeidin is an AI-powered assistant designed to provide spiritual
-        guidance, answer questions, and support your journey. Our mission is to
-        make knowledge and support accessible to everyone, anytime.
+      <h2 style={{ fontSize: "1.7rem", marginBottom: "10px" }}>
+        🕌 About Musaeidin
+      </h2>
+      <p style={{ fontWeight: 500, fontSize: "1.08rem", marginBottom: 18 }}>
+        <span style={{ fontWeight: 700 }}>Musaeidin (مُسَاعِدِين)</span>,
+        meaning "those who help" in Arabic, is a faith-driven AI-powered
+        platform designed to assist Muslims in their spiritual, mental, and
+        everyday lives.
+      </p>
+      <p style={{ marginBottom: 18 }}>
+        Built with sincerity and care, Musaeidin serves as your trusted Islamic
+        companion, offering guidance rooted in authentic sources—the Qur'an,
+        Sunnah, and reliable Hadith collections.
+      </p>
+      <p style={{ marginBottom: 18 }}>
+        <b>Our mission</b> is to provide a safe, respectful, and accessible
+        digital space where users can:
+      </p>
+      <ul
+        style={{
+          textAlign: "left",
+          margin: "0 auto 18px auto",
+          maxWidth: 420,
+          fontSize: "1.05rem",
+          color: "#333",
+        }}
+      >
+        <li>Ask questions related to faith, worship, or daily challenges</li>
+        <li>Seek mental and emotional wellness within Islamic values</li>
+        <li>Learn and apply authentic Islamic knowledge in real life</li>
+      </ul>
+      <p style={{ marginBottom: 18 }}>
+        We believe in the power of technology with purpose—using AI not just for
+        automation, but for supporting your Deen, strengthening your Iman, and
+        bringing ease to your journey in this world and the next.
+      </p>
+      <p
+        style={{
+          fontWeight: 600,
+          fontStyle: "italic",
+          color: "#007bff",
+          fontSize: "1.08rem",
+        }}
+      >
+        Musaeidin — Guided by Knowledge. Powered by Faith.
       </p>
     </div>
   );
@@ -59,7 +99,43 @@ function Feedback() {
 
   return (
     <div className="section-card">
-      <h2>Feedback</h2>
+      <h2 style={{ fontSize: "1.7rem", marginBottom: "10px" }}>
+        We Value Your Feedback
+      </h2>
+      <p style={{ fontWeight: 500, fontSize: "1.08rem", marginBottom: 12 }}>
+        Your experience matters to us!
+      </p>
+      <p style={{ marginBottom: 10 }}>
+        Please let us know how Musaeidin is working for you:
+      </p>
+      <ul
+        style={{
+          textAlign: "left",
+          margin: "0 auto 16px auto",
+          maxWidth: 420,
+          fontSize: "1.05rem",
+          color: "#333",
+        }}
+      >
+        <li>Is the information helpful and accurate?</li>
+        <li>Are there areas where we can improve?</li>
+        <li>Do you have suggestions or features you'd like to see?</li>
+      </ul>
+      <p style={{ marginBottom: 18 }}>
+        Your feedback helps us make Musaeidin better, more reliable, and more
+        useful for everyone seeking authentic Islamic guidance.
+      </p>
+      <p
+        style={{
+          fontWeight: 600,
+          fontStyle: "italic",
+          color: "#007bff",
+          fontSize: "1.08rem",
+          marginBottom: 18,
+        }}
+      >
+        📝 Share your thoughts — every comment is appreciated and helps us grow!
+      </p>
       <form onSubmit={handleSubmit} className="feedback-form">
         <textarea
           value={feedback}
