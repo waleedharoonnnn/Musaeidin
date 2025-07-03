@@ -76,7 +76,7 @@ npm start
 
 ## 📷 Screenshots
 
-![Musaeidin Chatbot Screenshot](screenshot.png)
+![Musaeidin Chatbot Screenshot](frontend/public/screenshot.png)
 
 ## 🤝 Contributing
 
