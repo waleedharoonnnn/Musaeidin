@@ -81,14 +81,11 @@ function Feedback() {
     e.preventDefault();
     setStatus("");
     try {
-      const res = await fetch(
-        "https://musaeidin-production.up.railway.app/feedback",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ feedback }),
-        }
-      );
+      const res = await fetch("http://localhost:5000/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ feedback }),
+      });
       if (res.ok) {
         setStatus("Thank you for your feedback!");
         setFeedback("");
@@ -217,14 +214,11 @@ function App() {
     setInput("");
     setLoading(true);
     try {
-      const res = await fetch(
-        "https://musaeidin-production.up.railway.app/chat",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: userMessage }),
-        }
-      );
+      const res = await fetch("http://localhost:5000/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userMessage }),
+      });
       const data = await res.json();
       setMessages((msgs) => [...msgs, { sender: "ai", text: data.response }]);
     } catch (err) {
