@@ -19,15 +19,14 @@ html {
 }
 
 .center-content {
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  padding-top: 110px;
+  padding: 0;
 }
 
 .main-logo {
@@ -141,14 +140,63 @@ body {
   font-family: "Segoe UI", "Roboto", "Arial", sans-serif;
 }
 
+.chatbox-rectangle {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  padding: 0 0 18px 0;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
+  overflow: hidden;
+}
+
+.glassmorphism {
+  backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+}
+
+.chatbox-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 24px 0 24px;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.clear-chat-btn {
+  background: #f44336;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 16px;
+  font-size: 0.98rem;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.clear-chat-btn:hover {
+  background: #d32f2f;
+}
+
 .chat-area {
   flex: 1;
-  padding: 24px 16px 8px 16px;
+  padding: 18px 24px 12px 24px;
   background: #f7fafd;
+  border-radius: 12px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  min-height: 200px;
+  margin-bottom: 18px;
 }
 
 .chat-bubble {
@@ -168,6 +216,10 @@ body {
   color: #fff;
   align-self: flex-end;
   border-bottom-right-radius: 4px;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+  border-bottom-left-radius: 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .ai-bubble {
@@ -175,6 +227,10 @@ body {
   color: #222;
   align-self: flex-start;
   border-bottom-left-radius: 4px;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+  border-bottom-right-radius: 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .input-area {
@@ -383,4 +439,18 @@ body {
   margin-top: 10px;
   color: #007bff;
   font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .chatbox-rectangle {
+    padding: 0;
+    max-width: 100vw;
+    max-height: 100vh;
+  }
+  .center-content {
+    padding: 0;
+  }
+  .chat-area {
+    padding: 8px 2vw 8px 2vw;
+  }
 }

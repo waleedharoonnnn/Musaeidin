@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./App.css";
+import ReactMarkdown from "react-markdown";
 
 function Navbar({ onNavigate }) {
   return (
@@ -150,47 +151,67 @@ function Feedback() {
   );
 }
 
-function Home({ input, setInput, loading, sendMessage, messages, chatEndRef }) {
+function Home({
+  input,
+  setInput,
+  loading,
+  sendMessage,
+  messages,
+  chatEndRef,
+  clearChat,
+}) {
   return (
     <>
       <img src="/logo.png" alt="Musaeidin Logo" className="main-logo" />
       <h1 className="main-title main-title-black">Musaeidin</h1>
-      <div className="chat-area">
-        {messages.map((msg, idx) => (
-          <div
-            key={idx}
-            className={`chat-bubble ${
-              msg.sender === "user" ? "user-bubble" : "ai-bubble"
-            }`}
+      <div className="chatbox-rectangle glassmorphism">
+        <div className="chatbox-header">
+          <span>Chat with Musaeidin</span>
+          <button className="clear-chat-btn" onClick={clearChat}>
+            Clear Chat
+          </button>
+        </div>
+        <div className="chat-area">
+          {messages.map((msg, idx) => (
+            <div
+              key={idx}
+              className={`chat-bubble ${
+                msg.sender === "user" ? "user-bubble" : "ai-bubble"
+              }`}
+            >
+              {msg.sender === "ai" ? (
+                <ReactMarkdown>{msg.text}</ReactMarkdown>
+              ) : (
+                <span>{msg.text}</span>
+              )}
+            </div>
+          ))}
+          {loading && (
+            <div className="chat-bubble ai-bubble">
+              <i>Musaeidin is typing...</i>
+            </div>
+          )}
+          <div ref={chatEndRef} />
+        </div>
+        <form className="chat-input-bar" onSubmit={sendMessage}>
+          <input
+            type="text"
+            placeholder="Salam, Message Musaeidin..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            disabled={loading}
+          />
+          <button
+            type="submit"
+            disabled={loading || !input.trim()}
+            className="send-btn"
           >
-            <span>{msg.text}</span>
-          </div>
-        ))}
-        {loading && (
-          <div className="chat-bubble ai-bubble">
-            <i>Musaeidin is typing...</i>
-          </div>
-        )}
-        <div ref={chatEndRef} />
+            <svg width="28" height="28" fill="none" viewBox="0 0 24 24">
+              <path fill="#fff" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+            </svg>
+          </button>
+        </form>
       </div>
-      <form className="chat-input-bar" onSubmit={sendMessage}>
-        <input
-          type="text"
-          placeholder="Salam, Message Musaeidin..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          disabled={loading}
-        />
-        <button
-          type="submit"
-          disabled={loading || !input.trim()}
-          className="send-btn"
-        >
-          <svg width="28" height="28" fill="none" viewBox="0 0 24 24">
-            <path fill="#fff" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
-          </svg>
-        </button>
-      </form>
     </>
   );
 }
@@ -230,6 +251,8 @@ function App() {
     setLoading(false);
   };
 
+  const clearChat = () => setMessages([]);
+
   return (
     <div className="pattern-bg">
       <Navbar onNavigate={setPage} />
@@ -242,6 +265,7 @@ function App() {
             sendMessage={sendMessage}
             messages={messages}
             chatEndRef={chatEndRef}
+            clearChat={clearChat}
           />
         )}
         {page === "about" && <AboutUs />}
